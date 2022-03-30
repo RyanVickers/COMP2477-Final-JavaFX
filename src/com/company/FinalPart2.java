@@ -10,15 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
-import java.awt.*;
-import java.awt.print.Pageable;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Main extends Application {
+public class FinalPart2 extends Application {
     GridPane gridPane = new GridPane();
     Button button = new Button("Solve");
     int[][] values = new int[6][7];
@@ -29,29 +25,36 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Pane grid = new Pane();
+        Pane pane = new Pane();
         Label label = new Label();
-        Scene scene = new Scene(grid, 225, 250);
+        Scene scene = new Scene(pane, 225, 250);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Consecutive Four");
         primaryStage.show();
-        grid.getChildren().add(makeGrid());
+        //Creating grid using function and adding to pane
+        pane.getChildren().add(createGrid());
+        //Setting grid pane layout
         gridPane.setLayoutX(5);
         gridPane.setLayoutY(20);
-        grid.getChildren().add(button);
-        grid.getChildren().add(label);
+        //Adding button and label to pane
+        pane.getChildren().add(button);
+        pane.getChildren().add(label);
+        //Setting label and button layout
         label.setLayoutX(50);
         button.setLayoutX(85);
         button.setLayoutY(210);
+        //Solve button event
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                //printing array out for debugging purpose
                 for (int i = 0; i < 6; i++) {
                     System.out.println(Arrays.toString(values[i]));
                 }
+                //Checking for consecutive values and setting label
                 if (isConsecutiveFour(values)) {
                     label.setText("A consecutive four found");
-                    System.out.println("Does the consecutive four pattern exist: " + isConsecutiveFour(values));
+                    System.out.println("Does the array Contain Four Consecutive Numbers of the Same Value: " + isConsecutiveFour(values));
                 } else label.setText("No consecutive four found");
 
             }
@@ -59,19 +62,25 @@ public class Main extends Application {
     }
 
     /**
-     * Function to construct gridPane
+     * Function to construct gridPane and create TextField with random numbers
      *
      * @return
      */
-    private Pane makeGrid() {
+    private Pane createGrid() {
         Random random = new Random();
+        //Creating grid of 6 rows and 7 columns
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
+                //Generating random number
                 int rand = random.nextInt(10);
+                //Creating TextField
                 TextField text = new TextField();
                 text.setPrefSize(30, 30);
+                //Adding random number to TextField
                 text.setText(Integer.toString(rand));
+                //adding values to array
                 values[row][col] = rand;
+                //adding values to pane
                 addPane(text, row, col);
             }
         }
@@ -80,21 +89,27 @@ public class Main extends Application {
     }
 
     /**
-     * Function add TextField Pane with random numbers to grid
+     * Function add TextField to pane and change edited numbers
      *
      * @param text
      * @param row
      * @param col
      */
     private void addPane(TextField text, int row, int col) {
-        text.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (!newV) {
-                System.out.printf("Mouse enetered cell [%d, %d]%n", row, col);
+        //Listener for if TextField lost focus
+        text.focusedProperty().addListener((ov, oldValue, newValue) -> {
+            if (!newValue) {
+                //print out what cell mouse is in for debug purpose
+                System.out.printf("Mouse Entered Cell: %d,%d", row, col);
+                //Get text of node in focused cell
                 int nodeValue = Integer.parseInt(getNode(gridPane, row, col).getText());
+                //Print out NodeValue for debug
                 System.out.println(nodeValue);
+                //Add changed NodeValue to Array
                 values[row][col] = nodeValue;
             }
         });
+        //Add to gridPane
         gridPane.add(text, col, row);
 
     }
@@ -108,8 +123,10 @@ public class Main extends Application {
      * @return
      */
     private TextField getNode(GridPane gridPane, int row, int col) {
+        //Gets column and row for each node
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                //Returns TextField value of node
                 return (TextField) node;
             }
         }
