@@ -101,17 +101,26 @@ public class FinalPart2 extends Application {
             if (!newValue) {
                 //print out what cell mouse is in for debug purpose
                 System.out.printf("Mouse Entered Cell: %d,%d", row, col);
-                //Get text of node in focused cell
-                int nodeValue = Integer.parseInt(getNode(gridPane, row, col).getText());
+                //initialize nodeValue to it's value before the change
+                int nodeValue = values[row][col];
+
+                //Could be an exception parsing the int (i.e. when it is left blank)
+                try {
+                    //Get text of node in focused cell
+                    nodeValue = Integer.parseInt(getNode(gridPane, row, col).getText());
+                } catch (NumberFormatException exception) {
+                    //leaves the text as what it was before changes were made if an exception was thrown
+                    text.setText(Integer.toString(nodeValue));
+                }
+
                 //Print out NodeValue for debug
-                System.out.println(nodeValue);
+                System.out.println(", value: " + nodeValue);
                 //Add changed NodeValue to Array
                 values[row][col] = nodeValue;
             }
         });
         //Add to gridPane
         gridPane.add(text, col, row);
-
     }
 
     /**
