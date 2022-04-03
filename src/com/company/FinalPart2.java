@@ -27,7 +27,7 @@ public class FinalPart2 extends Application {
     public void start(Stage primaryStage) throws Exception {
         Pane pane = new Pane();
         Label label = new Label();
-        Scene scene = new Scene(pane, 225, 250);
+        Scene scene = new Scene(pane, 225, 275);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Consecutive Four");
         primaryStage.show();
@@ -40,9 +40,9 @@ public class FinalPart2 extends Application {
         pane.getChildren().add(button);
         pane.getChildren().add(label);
         //Setting label and button layout
-        label.setLayoutX(50);
-        button.setLayoutX(85);
-        button.setLayoutY(210);
+        label.setLayoutX(30);
+        button.setLayoutX(80);
+        button.setLayoutY(230);
         //Solve button event
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
